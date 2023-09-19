@@ -44,13 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // cart
     const addToCartButton = document.querySelector(".add-cta");
     const quantityInput = document.querySelector(".add-qty");
-    const cartCounter = document.querySelector(".cart-nb");
+    const cart = document.querySelector(".cart-nb");
 
     let cartQuantity = 0;
 
-    function updateCartCounter(quantity) {
+    function updateCart(quantity) {
         cartQuantity = quantity;
-        cartCounter.textContent = cartQuantity > 99 ? "99+" : cartQuantity;
+        cart.textContent = cartQuantity > 99 ? "99+" : cartQuantity;
     }
 
     addToCartButton.addEventListener("click", function () {
@@ -58,10 +58,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!isNaN(quantity) && quantity > 0) {
             cartQuantity += quantity;
-            updateCartCounter(cartQuantity);
+            updateCart(cartQuantity);
 
             addToCartButton.disabled = true;
             addToCartButton.textContent = "Déjà au panier";
         }
     });
 });
+
+// Accordion
+document.addEventListener("DOMContentLoaded", function () {
+    const advantagesTitle = document.querySelector(".product-acrd-lnk:nth-of-type(1)");
+    const characteristicsTitle = document.querySelector(".product-acrd-lnk:nth-of-type(2)");
+    const advantagesContent = document.querySelector(".product-advantages");
+    const characteristicsContent = document.querySelector(".product-car");
+  
+    const AdvantagesOpen = localStorage.getItem("advantagesOpen") === "true";
+    const CharacteristicsOpen = localStorage.getItem("characteristicsOpen") === "true";
+  
+    function toggleAccordion(title, content) {
+      const isOpen = !title.classList.contains("closed");
+
+      if (isOpen) {
+        title.classList.add("closed");
+        content.style.display = "none";
+      } else {
+        title.classList.remove("closed");
+        content.style.display = "block";
+      }
+      localStorage.setItem(title.dataset.key, !isOpen);
+    }
+  
+    advantagesTitle.addEventListener("click", function () {
+      toggleAccordion(advantagesTitle, advantagesContent);
+    });
+  
+    characteristicsTitle.addEventListener("click", function () {
+      toggleAccordion(characteristicsTitle, characteristicsContent);
+    });
+  
+    if (AdvantagesOpen) {
+      toggleAccordion(advantagesTitle, advantagesContent);
+    }
+  
+    if (CharacteristicsOpen) {
+      toggleAccordion(characteristicsTitle, characteristicsContent);
+    }
+  });
+  
